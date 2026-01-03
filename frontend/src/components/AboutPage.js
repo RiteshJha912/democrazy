@@ -58,11 +58,11 @@ const AboutPage = () => {
 
         {/* Faucet & CTA Section */}
         <div className="faq-section">
-          <h2 className="faq-header">"Paise lagenge kya?"</h2>
-          <p style={{textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem'}}>
-            Nope. We run on the <strong>Sepolia Testnet</strong>, which uses fake play-money called Sepolia ETH. 
-            It's like Monopoly money : totally free to grab, but you need it to pay the "gas" fees (think of it as digital shagun) to cast your vote.
-          </p>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', fontWeight: 500 }}>
+              Grab some gas to start voting here
+            </p>
+          </div>
 
           <div style={{display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', marginTop: '2rem'}}>
             <a 

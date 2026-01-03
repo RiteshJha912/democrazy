@@ -7,6 +7,25 @@ const PollList = () => {
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  const loadingMessages = [
+    "Waking up the server from its nap...",
+    "The server is running on hopes, dreams & Render's free tier...",
+    "Please wait, I'm too poor for premium hosting...",
+    "Connecting to the decentralized future...",
+    "MetaMask is judging your wallet balance..."
+  ];
+
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setMessageIndex((prev) => (prev + 1) % loadingMessages.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [loading]);
+
   useEffect(() => {
     const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
     fetch(`${API_URL}/api/polls`)
@@ -21,7 +40,14 @@ const PollList = () => {
       });
   }, []);
 
-  if (loading) return <div className="text-center p-20 text-secondary">Loading experience...</div>;
+  if (loading) {
+    return (
+      <div className="loader-overlay">
+        <div className="loader-spinner"></div>
+        <p className="loader-text" key={messageIndex}>{loadingMessages[messageIndex]}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="landing-bg-container">
