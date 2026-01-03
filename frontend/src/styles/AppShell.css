@@ -320,8 +320,20 @@
     filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
 }
 
+/* Mobile Wallet Hint */
+.mobile-wallet-hint {
+    display: none;
+}
+
 /* Responsive Navbar - Aggressive Compact Mode */
 @media (max-width: 600px) {
+    .mobile-wallet-hint {
+        display: block;
+        font-size: 0.7rem;
+        color: var(--text-tertiary);
+        opacity: 0.8;
+    }
+
     .navbar-glass {
         flex-direction: column;
         height: auto;

@@ -160,10 +160,13 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
             <span>{account.slice(0, 6)}...{account.slice(-4)}</span>
           </button>
         ) : (
-          <button className="btn-connect-wallet" onClick={connectWallet} disabled={isConnecting}>
-            <WalletIcon className="h-5 w-5" style={{height: '20px'}} />
-            <span>{isConnecting ? 'Connecting...' : 'Connect Wallet'}</span>
-          </button>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '100%'}}>
+            <button className="btn-connect-wallet" onClick={connectWallet} disabled={isConnecting}>
+              <WalletIcon className="h-5 w-5" style={{height: '20px'}} />
+              <span>{isConnecting ? 'Connecting...' : 'Connect Wallet'}</span>
+            </button>
+            <span className="mobile-wallet-hint">Open website in MetaMask Browser to connect</span>
+          </div>
         )}
       </div>
     </nav>
