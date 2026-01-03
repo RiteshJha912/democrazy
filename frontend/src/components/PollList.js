@@ -98,7 +98,7 @@ const PollList = () => {
         <div className="hero-section">
           <h1 className="gradient-title">Community Governance</h1>
           <p className="hero-subtitle">
-            Participate in the future of our ecosystem. Vote on active proposals or create your own to make your voice heard on-chain.
+            Because your opinion actually matters here (unlike at your family dinner). Cast your vote on-chain, where no one can silence you, not even the admins.
           </p>
         </div>
         

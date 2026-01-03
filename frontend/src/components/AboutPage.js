@@ -5,7 +5,7 @@ import '../styles/About.css';
 
 const AboutPage = () => {
   return (
-    <div className="landing-bg-container">
+    <div style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
       <div className="about-container animate-fade-up">
         {/* Hero */}
         <div className="about-hero">
@@ -37,7 +37,7 @@ const AboutPage = () => {
             </div>
             <h2 className="feature-title">No "Bakwaas" Policy</h2>
             <p className="feature-desc">
-              Decentralized doesn't mean "kachra allowed". We've built in a robust 
+               We've built in a robust 
               <strong> Content Filtering System</strong> that automatically blocks NSFW and toxic terms.
               We keep the platform clean like your family WhatsApp group... actually, simpler than that. No aunties forwarding nonsense here.
             </p>

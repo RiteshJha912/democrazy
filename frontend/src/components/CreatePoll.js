@@ -5,6 +5,7 @@ import { PlusIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outl
 import { CONTRACT_ADDRESS, VOTING_ABI } from '../contractConfig';
 import { containsBadWords } from '../utils/contentFilter';
 import '../styles/CreatePollModern.css';
+import '../styles/PollListModern.css';
 
 const CreatePoll = ({ signer, account }) => {
   const [question, setQuestion] = useState('');
@@ -49,7 +50,6 @@ const CreatePoll = ({ signer, account }) => {
     
     try {
       setLoading(true);
-      // Renamed variable to avoid potential linter confusion
       const votingContract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, signer);
       
       if (validOptions.length < 2) return alert("Please provide at least 2 valid options.");
@@ -66,62 +66,64 @@ const CreatePoll = ({ signer, account }) => {
   };
 
   return (
-    <div className="create-wrapper animate-fade-up">
-      <div className="hero-section" style={{marginBottom: '3rem'}}>
-        <h1 className="gradient-title" style={{fontSize: '3rem'}}>New Proposal</h1>
-        <p className="hero-subtitle">Define a new question for the community to vote on.</p>
-      </div>
+    <div className="landing-bg-container">
+      <div className="create-wrapper animate-fade-up">
+        <div className="hero-section" style={{marginBottom: '3rem'}}>
+          <h1 className="gradient-title" style={{fontSize: '3rem'}}>New Proposal</h1>
+          <p className="hero-subtitle">Define a new question for the community to vote on.</p>
+        </div>
 
-      <div className="form-card">
-        <form onSubmit={handleSubmit}>
-          <div className="modern-input-group">
-            <label className="modern-label">Proposition Question</label>
-            <input 
-              type="text" 
-              className="modern-input" 
-              value={question} 
-              onChange={e => setQuestion(e.target.value)} 
-              placeholder="e.g. Should we implement EIP-1559?"
-              required 
-            />
-          </div>
-          
-          <div className="modern-input-group">
-            <label className="modern-label">Voting Options</label>
-            {options.map((opt, i) => (
-              <div key={i} className="option-row">
-                <span className="option-index">{i + 1}</span>
-                <input 
-                  type="text" 
-                  className="modern-input" 
-                  value={opt} 
-                  onChange={e => handleOptionChange(i, e.target.value)} 
-                  placeholder={`Option ${i+1}`} 
-                  required 
-                />
-                {options.length > 2 && (
-                  <button type="button" className="btn-icon-action" onClick={() => removeOption(i)}>
-                    <XMarkIcon style={{height: '20px'}} />
-                  </button>
-                )}
-              </div>
-            ))}
+        <div className="form-card">
+          <form onSubmit={handleSubmit}>
+            <div className="modern-input-group">
+              <label className="modern-label">Proposition Question</label>
+              <input 
+                type="text" 
+                className="modern-input" 
+                value={question} 
+                onChange={e => setQuestion(e.target.value)} 
+                placeholder="e.g. Should we implement EIP-1559?"
+                required 
+              />
+            </div>
             
-            {options.length < 5 && (
-              <button type="button" className="btn-add-modern" onClick={addOption}>
-                <PlusIcon style={{height: '18px'}} /> Add another option
-              </button>
-            )}
-          </div>
+            <div className="modern-input-group">
+              <label className="modern-label">Voting Options</label>
+              {options.map((opt, i) => (
+                <div key={i} className="option-row">
+                  <span className="option-index">{i + 1}</span>
+                  <input 
+                    type="text" 
+                    className="modern-input" 
+                    value={opt} 
+                    onChange={e => handleOptionChange(i, e.target.value)} 
+                    placeholder={`Option ${i+1}`} 
+                    required 
+                  />
+                  {options.length > 2 && (
+                    <button type="button" className="btn-icon-action" onClick={() => removeOption(i)}>
+                      <XMarkIcon style={{height: '20px'}} />
+                    </button>
+                  )}
+                </div>
+              ))}
+              
+              {options.length < 5 && (
+                <button type="button" className="btn-add-modern" onClick={addOption}>
+                  <PlusIcon style={{height: '18px'}} /> Add another option
+                </button>
+              )}
+            </div>
 
-          <button type="submit" className="btn-submit-modern" disabled={loading} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem'}}>
-            {loading ? "Confirming on-chain..." : (
-              <>
-                 <PaperAirplaneIcon style={{height: '24px'}} /> Submit Proposal
-              </>
-            )}
-          </button>
-        </form>
+            <button type="submit" className="btn-submit-modern" disabled={loading} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem'}}>
+              {loading ? "Confirming on-chain..." : (
+                <>
+                   <PaperAirplaneIcon style={{height: '24px'}} /> Submit Proposal
+                </>
+              )}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
