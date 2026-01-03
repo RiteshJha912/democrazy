@@ -9,8 +9,9 @@
     flex: 1;
     position: relative;
     z-index: 1;
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+    /* Removed padding to allow full-bleed backgrounds */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Glass Navbar */
@@ -48,49 +49,56 @@
 .nav-brand span {
     background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Navigation Links */
+/* Navigation Links - Unique Floating Dock */
 .nav-links {
     display: flex;
-    gap: 2.5rem;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 0.5rem 1.5rem;
+    gap: 0.5rem;
+    /* Tighter gap for segmented feel */
+    background: rgba(0, 0, 0, 0.3);
+    /* Darker backdrop */
+    padding: 0.4rem;
     border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Subtle border */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Inset depth */
+    backdrop-filter: blur(10px);
 }
 
 .nav-link-item {
     text-decoration: none;
     color: var(--text-secondary);
     font-weight: 500;
-    font-size: 0.95rem;
-    transition: color 0.2s, text-shadow 0.2s;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    z-index: 1;
 }
 
+/* Hover Effect - Text only */
 .nav-link-item:hover {
-    color: var(--text-primary);
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    color: #fff;
+    background: transparent;
 }
 
+/* Active State - Solid Pill, No Glow */
 .nav-link-item.active {
-    color: var(--primary);
+    color: #fff;
+    background: var(--primary);
+    /* Solid primary pill */
     font-weight: 600;
+    box-shadow: none;
 }
 
+/* Remove old dot */
 .nav-link-item.active::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background: var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--primary);
+    display: none;
 }
 
 /* Wallet Button */
@@ -131,6 +139,10 @@
     background: rgba(16, 185, 129, 0.1);
     color: var(--success);
     border-color: rgba(16, 185, 129, 0.2);
+    min-width: 160px;
+    /* Fixed width to prevent resize */
+    justify-content: center;
+    position: relative;
 }
 
 .btn-connected:hover {
@@ -140,12 +152,22 @@
     box-shadow: none;
 }
 
-.btn-connected:hover span {
-    display: none;
+.btn-connected:hover span,
+.btn-connected:hover svg {
+    visibility: hidden;
+    /* Hide content but keep space */
+    opacity: 0;
 }
 
 .btn-connected:hover::after {
     content: 'Disconnect';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
 }
 
 /* Footer */
@@ -174,4 +196,161 @@
 
 .footer-link:hover {
     color: var(--primary);
+}
+
+/* Author Link Style */
+.footer-author-link {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: transparent;
+}
+
+.footer-author-link:hover {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}
+
+/* Heart Beat Animation */
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+
+    14% {
+        transform: scale(1.3);
+    }
+
+    28% {
+        transform: scale(1);
+    }
+
+    42% {
+        transform: scale(1.3);
+    }
+
+    70% {
+        transform: scale(1);
+    }
+}
+
+.heart-beat {
+    animation: heartBeat 1.3s infinite ease-in-out;
+    display: inline-block;
+}
+
+/* GitHub Star Button */
+.btn-github-star {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-github-star:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.star-icon-anim {
+    color: var(--text-secondary);
+    /* Default muted color */
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-github-star:hover .star-icon-anim {
+    color: #fbbf24;
+    /* Yellow on hover */
+    transform: rotate(144deg) scale(1.2);
+    /* Rotate and pop */
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+}
+
+/* Responsive Navbar - Aggressive Compact Mode */
+@media (max-width: 600px) {
+    .navbar-glass {
+        flex-direction: column;
+        height: auto;
+        padding: 0.5rem 0.75rem;
+        gap: 0.5rem;
+        background: rgba(10, 14, 23, 0.95);
+    }
+
+    .nav-brand {
+        font-size: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-brand svg {
+        height: 20px !important;
+        width: 20px !important;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0.35rem 0.5rem;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        /* Remove inset shadow on mobile for flatter look */
+    }
+
+    .nav-link-item {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .nav-actions {
+        width: 100%;
+    }
+
+    .btn-connect-wallet {
+        width: 100%;
+        justify-content: center;
+        padding: 0.5rem 0.75rem;
+        /* Slimmer button */
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .btn-connected {
+        min-width: auto;
+        /* Allow shrink */
+        width: 100%;
+        padding: 0.5rem;
+    }
+
+    /* Compact Footer */
+    .footer-minimal {
+        padding: 1.5rem 1rem;
+    }
+
+    .footer-minimal p {
+        font-size: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .btn-github-star {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        width: 100%;
+        justify-content: center;
+    }
 }

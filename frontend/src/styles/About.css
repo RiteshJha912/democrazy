@@ -1,0 +1,240 @@
+/* Basic About Styles */
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    color: var(--text-primary);
+}
+
+.about-hero {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.about-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Feature Grid */
+.feature-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+.feature-block {
+    background: var(--bg-card);
+    border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.feature-block:hover {
+    transform: translateY(-5px);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.feature-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+}
+
+.feature-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.feature-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* FAQ/Faucet Section */
+.faq-section {
+    margin-top: 6rem;
+    text-align: center;
+}
+
+.faq-header {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Faucet Button Container */
+.about-cta-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    align-items: center;
+}
+
+/* Shared Button Styles for About Page */
+.about-btn-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0 2rem;
+    /* Height controlled by height prop */
+    border-radius: 100px;
+    /* Pillow shape is sleeker */
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: none;
+}
+
+/* Faucet Button - Sleek Cyan Glass */
+.about-faucet-btn {
+    background: rgba(6, 182, 212, 0.08);
+    color: #22d3ee;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+.about-faucet-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    z-index: -1;
+}
+
+.about-faucet-btn:hover {
+    border-color: #22d3ee;
+    transform: translateY(-2px);
+    color: #fff;
+    background: rgba(6, 182, 212, 0.15);
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+    /* Subtle ring instead of blur glow */
+}
+
+.about-faucet-btn:hover::before {
+    transform: translateX(100%);
+}
+
+
+/* Primary CTA - Sleek Indigo */
+.btn-submit-modern.about-page-override {
+    background: var(--primary);
+    color: white;
+    margin-top: 0 !important;
+    /* Force override */
+    border-radius: 100px;
+    /* Match the faucet btn */
+    box-shadow: none;
+    /* Kill the annoying glow */
+    border: 1px solid transparent;
+}
+
+.btn-submit-modern.about-page-override:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    /* Much softer shadow */
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Adjustments - Aggressive Compact */
+@media (max-width: 600px) {
+    .about-container {
+        padding: 2rem 1rem;
+    }
+
+    .about-hero {
+        margin-bottom: 2.5rem;
+    }
+
+    .about-title {
+        font-size: 2rem;
+        line-height: 1.1;
+    }
+
+    .about-subtitle {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .feature-section {
+        gap: 1.5rem;
+    }
+
+    .feature-block {
+        padding: 1.25rem;
+        border-radius: 16px;
+    }
+
+    .feature-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+
+    .feature-icon-wrapper svg {
+        height: 24px !important;
+    }
+
+    .feature-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .faq-section {
+        margin-top: 3rem;
+    }
+
+    .faq-header {
+        font-size: 1.5rem;
+    }
+
+    /* Buttons on mobile */
+    .about-faucet-btn {
+        height: 50px;
+        font-size: 0.9rem;
+        padding: 0 1rem;
+    }
+}

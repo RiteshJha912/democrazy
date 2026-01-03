@@ -23,6 +23,7 @@
     margin: 1rem 0;
     background: linear-gradient(135deg, #fff 50%, #94a3b8 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -148,16 +149,52 @@ button.back-btn:hover {
     transform: translateX(-5px);
 }
 
-/* Responsive */
+/* Responsive - Aggressive Compact */
 @media (max-width: 900px) {
     .detail-layout {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2rem;
+        padding: 1.5rem 1rem 4rem;
     }
 
     .stats-panel {
         position: static;
         order: -1;
-        /* Show stats above voting on mobile? Optional */
+    }
+}
+
+@media (max-width: 600px) {
+    .detail-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .vote-option-modern {
+        padding: 1rem;
+        min-height: 60px;
+    }
+
+    .option-label {
+        font-size: 0.95rem;
+    }
+
+    .option-percent {
+        font-size: 0.9rem;
+        padding: 2px 6px;
+    }
+
+    .stats-panel {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .chart-container-modern {
+        height: 250px;
     }
 }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
-import { PlusIcon, XMarkIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { CONTRACT_ADDRESS, VOTING_ABI } from '../contractConfig';
-import '../styles/CreatePollModern.css'; // New styles
+import { containsBadWords } from '../utils/contentFilter';
+import '../styles/CreatePollModern.css';
 
 const CreatePoll = ({ signer, account }) => {
   const [question, setQuestion] = useState('');
@@ -32,10 +33,28 @@ const CreatePoll = ({ signer, account }) => {
     e.preventDefault();
     if (!signer) return alert("Please connect your wallet first!");
     
+    // Content Moderation Check
+    if (containsBadWords(question)) {
+      alert("⚠️ Your question contains inappropriate language. Please keep the environment civil.");
+      return;
+    }
+
+    const validOptions = options.filter(o => o.trim() !== "");
+    for (let opt of validOptions) {
+      if (containsBadWords(opt)) {
+        alert(`⚠️ Option "${opt}" contains inappropriate language.`);
+        return;
+      }
+    }
+    
     try {
       setLoading(true);
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, signer);
-      const tx = await contract.createPoll(question, options.filter(o => o.trim() !== ""));
+      // Renamed variable to avoid potential linter confusion
+      const votingContract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, signer);
+      
+      if (validOptions.length < 2) return alert("Please provide at least 2 valid options.");
+
+      const tx = await votingContract.createPoll(question, validOptions);
       await tx.wait();
       navigate('/');
     } catch (error) {
@@ -48,8 +67,8 @@ const CreatePoll = ({ signer, account }) => {
 
   return (
     <div className="create-wrapper animate-fade-up">
-      <div className="hero-section" style={{marginBottom: '2rem'}}>
-        <h1 className="gradient-title" style={{fontSize: '2.5rem'}}>New Proposal</h1>
+      <div className="hero-section" style={{marginBottom: '3rem'}}>
+        <h1 className="gradient-title" style={{fontSize: '3rem'}}>New Proposal</h1>
         <p className="hero-subtitle">Define a new question for the community to vote on.</p>
       </div>
 
@@ -89,16 +108,16 @@ const CreatePoll = ({ signer, account }) => {
             ))}
             
             {options.length < 5 && (
-              <button type="button" className="btn-add-modern" onClick={addOption} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'}}>
+              <button type="button" className="btn-add-modern" onClick={addOption}>
                 <PlusIcon style={{height: '18px'}} /> Add another option
               </button>
             )}
           </div>
 
-          <button type="submit" className="btn-submit-modern" disabled={loading} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'}}>
+          <button type="submit" className="btn-submit-modern" disabled={loading} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem'}}>
             {loading ? "Confirming on-chain..." : (
               <>
-                 <RocketLaunchIcon style={{height: '20px'}} /> Submit Proposal
+                 <PaperAirplaneIcon style={{height: '24px'}} /> Submit Proposal
               </>
             )}
           </button>

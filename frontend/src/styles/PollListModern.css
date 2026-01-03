@@ -1,170 +1,230 @@
-/* Wrapper */
+/* Wrapper & Hero */
 .poll-list-wrapper {
     max-width: var(--container-width);
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2rem 5rem;
 }
 
-/* Hero Section */
 .hero-section {
     text-align: center;
-    padding: 5rem 0 4rem;
-    position: relative;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    height: 60%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-    filter: blur(40px);
-    z-index: -1;
+    padding: 6rem 0 5rem;
 }
 
 .gradient-title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     line-height: 1.1;
     font-weight: 800;
     margin-bottom: 1.5rem;
-    background: linear-gradient(to bottom right, #ffffff 30%, #94a3b8 100%);
+    color: #fff;
+    letter-spacing: -0.04em;
+    /* Minimalist Gradient */
+    background: linear-gradient(180deg, #fff 20%, #94a3b8 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.03em;
 }
 
 .hero-subtitle {
     color: var(--text-secondary);
-    font-size: 1.25rem;
-    max-width: 600px;
+    font-size: 1.15rem;
+    max-width: 540px;
     margin: 0 auto;
+    line-height: 1.6;
 }
 
 /* Grid Layout */
 .polls-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
 }
 
-/* Modern Card */
+/* Prodigy Design Card - Swiss/Bauhaus inspired Minimal Tech */
 .poll-card-modern {
-    background: var(--bg-card);
-    backdrop-filter: blur(12px);
-    border: var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
+    /* Matte finish, deep structure */
+    background: #0f1014;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Crisp, thin hairline */
+    border-radius: 16px;
+    /* Precise curve */
+    padding: 2.5rem;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease, border-color 0.3s ease;
     position: relative;
-    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
     height: 100%;
 }
 
+/* Hover: Lift + crisp focused shadow (No blur glow) */
 .poll-card-modern:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg), var(--shadow-neon);
-    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
-/* Card Content */
+/* Status Badge - Minimalist Dot */
 .card-top-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .status-badge {
-    background: rgba(16, 185, 129, 0.1);
-    color: #34d399;
-    padding: 0.25rem 0.75rem;
-    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
+    color: #a1a1aa;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    letter-spacing: 0.1em;
 }
 
+.status-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: #10b981;
+    /* Precise clean green */
+    border-radius: 50%;
+}
+
+.card-top-meta span:last-child {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #52525b;
+    /* Muted tech grey */
+}
+
+/* Typography - Editorial Style */
 .card-title {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 1.5rem;
+    font-weight: 600;
+    /* Regular heavy, not bold */
+    color: #fff;
+    margin: 0 0 2.5rem;
     line-height: 1.4;
     flex-grow: 1;
-    /* Pushes bottom content down */
+    letter-spacing: -0.02em;
 }
 
-/* Stats Row */
+/* Stats Row - Clean layout, no boxes */
 .card-stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding: 1.25rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .stat-item {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 4px;
 }
 
 .stat-value {
     font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-weight: 500;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
 }
 
 .stat-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    color: #71717a;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--text-tertiary);
+    font-weight: 500;
 }
 
-/* Action Button */
+/* Button - The "Prodigy" Layout
+   Simple, solid, high contrast. No gradients. */
+/* Button - Sophisticated Dark Glass */
 .btn-card-action {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03));
+    background: rgba(255, 255, 255, 0.03);
+    color: #e4e4e7;
+    /* Soft white/grey */
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1rem;
-    color: var(--text-primary);
+    border-radius: 100px;
+    padding: 1rem 1.5rem;
     font-weight: 600;
+    font-size: 0.95rem;
     text-decoration: none;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .btn-card-action:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    /* Subtle highlight */
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    /* Bright white on hover */
+    transform: translateY(-1px);
+}
+
+.btn-card-action svg {
+    color: #a1a1aa;
+    /* Muted icon default */
+    transition: all 0.3s ease;
+}
+
+.btn-card-action:hover svg {
+    color: #ffffff;
+    transform: translateX(4px);
 }
 
 /* Empty State */
 .empty-modern {
     grid-column: 1 / -1;
-    background: var(--glass-bg);
     border: 1px dashed rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-lg);
-    padding: 5rem 2rem;
+    border-radius: 16px;
+    padding: 4rem;
     text-align: center;
 }
 
-.empty-modern p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
+/* Background - Subtle Grid or Noise instead of dots for "Prodigy" feel? stick to dots to match others but removed blur */
+.landing-bg-container {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .poll-list-wrapper {
+        padding: 0 1rem 3rem;
+    }
+
+    .hero-section {
+        padding: 3rem 0 2rem;
+    }
+
+    .gradient-title {
+        font-size: 2.25rem;
+    }
+
+    .polls-grid-modern {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .poll-card-modern {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
 }

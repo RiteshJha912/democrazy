@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ethers } from 'ethers';
-import { CubeTransparentIcon, WalletIcon } from '@heroicons/react/24/outline';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CubeTransparentIcon, WalletIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, StarIcon } from '@heroicons/react/24/solid';
+import { FaGithub } from 'react-icons/fa';
 import PollList from './components/PollList';
 import CreatePoll from './components/CreatePoll';
 import PollDetail from './components/PollDetail';
+import AboutPage from './components/AboutPage';
 import './styles/AppShell.css';
 
 function App() {
@@ -77,6 +79,7 @@ function App() {
             <Route path="/" element={<PollList />} />
             <Route path="/create" element={<CreatePoll signer={signer} account={account} />} />
             <Route path="/polls/:id" element={<PollDetail signer={signer} account={account} />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>
         <Footer />
@@ -102,6 +105,9 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
         <Link to="/create" className={`nav-link-item ${location.pathname === '/create' ? 'active' : ''}`}>
           Create Poll
         </Link>
+        <Link to="/about" className={`nav-link-item ${location.pathname === '/about' ? 'active' : ''}`}>
+          About
+        </Link>
       </div>
 
       <div className="nav-actions">
@@ -121,15 +127,28 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
   );
 }
 
+
+
+
+
 function Footer() {
   return (
     <footer className="footer-minimal">
-      <p>&copy; 2024 Democrazy. Decentralized Voting on Sepolia.</p>
-      <div style={{marginTop: '0.5rem'}}>
-        <a href="#" className="footer-link">Documentation</a>
-        <a href="#" className="footer-link">Contract</a>
-        <a href="#" className="footer-link">Support</a>
+      <div style={{marginBottom: '1.5rem'}}>
+        <a 
+          href="https://github.com/RiteshJha912/democrazy" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="btn-github-star"
+        >
+          <FaGithub style={{fontSize: '1.1rem'}} />
+          <span>Star on GitHub</span>
+          <StarIcon className="star-icon-anim" style={{height: '18px'}} />
+        </a>
       </div>
+      <p style={{opacity: 0.8, fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'}}>
+        Built with <HeartIcon className="heart-beat" style={{height: '16px', color: '#ef4444'}} /> on chain by <a href="https://github.com/RiteshJha912" target="_blank" rel="noopener noreferrer" className="footer-author-link">Ritzardous</a>
+      </p>
     </footer>
   );
 }
