@@ -33,10 +33,42 @@
 }
 
 /* Grid Layout */
+/* Grid Layout - Mobile First (Stacked) */
 .polls-grid-modern {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: 1fr;
     gap: 2rem;
+}
+
+/* Bento Grid System - Desktop Only */
+@media (min-width: 1024px) {
+    .polls-grid-modern {
+        grid-template-columns: repeat(12, 1fr);
+        gap: 2rem;
+    }
+
+    /* Cycle of 4: Wide-Narrow, Narrow-Wide */
+    /* Adjusted Ratio: 7:5 (approx 58% vs 42%) */
+
+    /* 1st in cycle: Wide */
+    .poll-card-modern:nth-child(4n + 1) {
+        grid-column: span 7;
+    }
+
+    /* 2nd in cycle: Narrow */
+    .poll-card-modern:nth-child(4n + 2) {
+        grid-column: span 5;
+    }
+
+    /* 3rd in cycle: Narrow */
+    .poll-card-modern:nth-child(4n + 3) {
+        grid-column: span 5;
+    }
+
+    /* 4th in cycle: Wide */
+    .poll-card-modern:nth-child(4n + 4) {
+        grid-column: span 7;
+    }
 }
 
 /* Prodigy Design Card - Swiss/Bauhaus inspired Minimal Tech */
@@ -196,7 +228,8 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+    /* Increased visibility of dots as requested */
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.1) 1px, transparent 0);
     background-size: 24px 24px;
 }
 
