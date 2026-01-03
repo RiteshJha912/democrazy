@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ethers } from 'ethers';
+import { CONTRACT_ADDRESS, VOTING_ABI } from '../contractConfig';
 import '../styles/PollListModern.css'; // Import new modern styles
 
 const PollList = () => {
@@ -39,6 +41,47 @@ const PollList = () => {
         setLoading(false);
       });
   }, []);
+
+  // Background Sync for accurate vote counts
+  useEffect(() => {
+    if (loading || polls.length === 0) return;
+
+    const syncVotesWithBlockchain = async () => {
+      try {
+        const provider = new ethers.JsonRpcProvider('https://ethereum-sepolia.publicnode.com');
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, provider);
+
+        const updates = await Promise.all(polls.map(async (p) => {
+          try {
+            const data = await contract.getPoll(p.pollId);
+            // data[3] is the votes array
+            const realVotes = Array.from(data[3]).map(v => Number(v));
+            return { id: p.pollId, votes: realVotes };
+          } catch (e) {
+            return null;
+          }
+        }));
+
+        setPolls(prevPolls => prevPolls.map(p => {
+          const update = updates.find(u => u && u.id === p.pollId);
+          // Only update if votes are strictly different to avoid render loops if using strict checking, 
+          // but simpler is to just apply the latest Truth from chain.
+          if (update) {
+             const currentTotal = p.votes ? p.votes.reduce((a,b)=>a+b,0) : 0;
+             const newTotal = update.votes.reduce((a,b)=>a+b,0);
+             if(currentTotal !== newTotal) return { ...p, votes: update.votes };
+          }
+          return p;
+        }));
+
+      } catch (e) {
+        console.error("Blockchain sync failed:", e);
+      }
+    };
+
+    syncVotesWithBlockchain();
+    // eslint-disable-next-line
+  }, [loading]); // Only run once when loading finishes
 
   if (loading) {
     return (
