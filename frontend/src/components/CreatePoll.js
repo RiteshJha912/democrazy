@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
+import { PlusIcon, XMarkIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import { CONTRACT_ADDRESS, VOTING_ABI } from '../contractConfig';
+import '../styles/CreatePollModern.css'; // New styles
 
-const CreatePoll = ({ signer }) => {
+const CreatePoll = ({ signer, account }) => {
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
   const [loading, setLoading] = useState(false);
@@ -30,83 +32,77 @@ const CreatePoll = ({ signer }) => {
     e.preventDefault();
     if (!signer) return alert("Please connect your wallet first!");
     
-    // Filter out empty options
-    const validOptions = options.filter(o => o.trim() !== "");
-    if (validOptions.length < 2) return alert("At least 2 valid options are required.");
-
     try {
       setLoading(true);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, signer);
-      const tx = await contract.createPoll(question, validOptions);
-      console.log("Transaction sent:", tx.hash);
+      const tx = await contract.createPoll(question, options.filter(o => o.trim() !== ""));
       await tx.wait();
-      alert("Poll created successfully!");
       navigate('/');
     } catch (error) {
       console.error(error);
-      alert("Error creating poll. See console for details.");
+      alert("Error: " + (error.reason || error.message));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-8 col-lg-6">
-        <div className="card shadow-sm">
-          <div className="card-body">
-            <h2 className="card-title mb-4 text-center">Create New Poll</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label fw-bold">Poll Question</label>
+    <div className="create-wrapper animate-fade-up">
+      <div className="hero-section" style={{marginBottom: '2rem'}}>
+        <h1 className="gradient-title" style={{fontSize: '2.5rem'}}>New Proposal</h1>
+        <p className="hero-subtitle">Define a new question for the community to vote on.</p>
+      </div>
+
+      <div className="form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="modern-input-group">
+            <label className="modern-label">Proposition Question</label>
+            <input 
+              type="text" 
+              className="modern-input" 
+              value={question} 
+              onChange={e => setQuestion(e.target.value)} 
+              placeholder="e.g. Should we implement EIP-1559?"
+              required 
+            />
+          </div>
+          
+          <div className="modern-input-group">
+            <label className="modern-label">Voting Options</label>
+            {options.map((opt, i) => (
+              <div key={i} className="option-row">
+                <span className="option-index">{i + 1}</span>
                 <input 
                   type="text" 
-                  className="form-control" 
-                  value={question} 
-                  onChange={e => setQuestion(e.target.value)} 
-                  placeholder="e.g. What is your favorite color?"
+                  className="modern-input" 
+                  value={opt} 
+                  onChange={e => handleOptionChange(i, e.target.value)} 
+                  placeholder={`Option ${i+1}`} 
                   required 
                 />
-              </div>
-              
-              <div className="mb-4">
-                <label className="form-label fw-bold">Options (2-5)</label>
-                {options.map((opt, i) => (
-                  <div key={i} className="input-group mb-2">
-                    <span className="input-group-text">#{i + 1}</span>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      value={opt} 
-                      onChange={e => handleOptionChange(i, e.target.value)} 
-                      placeholder={`Option ${i+1}`} 
-                      required 
-                    />
-                     {options.length > 2 && (
-                        <button type="button" className="btn btn-outline-danger" onClick={() => removeOption(i)}>X</button>
-                     )}
-                  </div>
-                ))}
-                {options.length < 5 && (
-                  <button type="button" className="btn btn-sm btn-outline-secondary w-100" onClick={addOption}>
-                    + Add Another Option
+                {options.length > 2 && (
+                  <button type="button" className="btn-icon-action" onClick={() => removeOption(i)}>
+                    <XMarkIcon style={{height: '20px'}} />
                   </button>
                 )}
               </div>
-
-              <div className="d-grid">
-                <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
-                  {loading ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                      Creating Transaction...
-                    </>
-                  ) : "Create Poll"}
-                </button>
-              </div>
-            </form>
+            ))}
+            
+            {options.length < 5 && (
+              <button type="button" className="btn-add-modern" onClick={addOption} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'}}>
+                <PlusIcon style={{height: '18px'}} /> Add another option
+              </button>
+            )}
           </div>
-        </div>
+
+          <button type="submit" className="btn-submit-modern" disabled={loading} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'}}>
+            {loading ? "Confirming on-chain..." : (
+              <>
+                 <RocketLaunchIcon style={{height: '20px'}} /> Submit Proposal
+              </>
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );

@@ -1,71 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import '../styles/PollListModern.css'; // Import new modern styles
 
 const PollList = () => {
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:5000/api/polls')
-      .then(res => {
-          if (!res.ok) throw new Error("Failed to fetch polls");
-          return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         setPolls(data);
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
-        setError("Could not load polls. Ensure backend is running.");
         setLoading(false);
       });
   }, []);
 
-  if (loading) return (
-      <div className="d-flex justify-content-center mt-5">
-          <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-          </div>
-      </div>
-  );
-
-  if (error) return <div className="alert alert-danger">{error}</div>;
+  if (loading) return <div className="text-center p-20 text-secondary">Loading experience...</div>;
 
   return (
-    <div>
-      <div className="row align-items-center mb-4">
-        <div className="col">
-          <h2>Active Polls</h2>
-        </div>
-        <div className="col-auto">
-             <button className="btn btn-sm btn-outline-secondary" onClick={() => window.location.reload()}>Refresh</button>
-        </div>
+    <div className="poll-list-wrapper animate-fade-up">
+      <div className="hero-section">
+        <h1 className="gradient-title">Community Governance</h1>
+        <p className="hero-subtitle">
+          Participate in the future of our ecosystem. Vote on active proposals or create your own to make your voice heard on-chain.
+        </p>
       </div>
       
-      <div className="row">
+      <div className="polls-grid-modern">
         {polls.length === 0 ? (
-            <div className="col-12 text-center p-5 bg-light rounded">
-                <p className="text-muted mb-0">No polls found. Be the first to create one!</p>
-            </div>
+          <div className="empty-modern">
+            <p>No active proposals found in the ecosystem.</p>
+            <Link to="/create" className="text-primary hover:text-white mt-4 inline-flex items-center gap-2 font-semibold" style={{color: '#6366f1', textDecoration: 'none'}}>
+              Initialize first proposal <ArrowRightIcon style={{height: '16px'}} />
+            </Link>
+          </div>
         ) : (
-          polls.map(poll => (
-            <div className="col-md-6 col-lg-4 mb-4" key={poll._id || poll.pollId}>
-              <div className="card h-100 shadow-sm border-0">
-                <div className="card-body">
-                  <h5 className="card-title text-dark">{poll.question}</h5>
-                  <p className="card-text text-muted small">
-                    Poll ID: #{poll.pollId} <br/>
-                    Total Votes: {poll.votes ? poll.votes.reduce((a,b)=>a+b, 0) : 0}
-                  </p>
-                  <Link to={`/polls/${poll.pollId}`} className="btn btn-primary w-100 mt-2">
-                    Vote Now
-                  </Link>
+          polls.map((poll) => {
+            const totalVotes = poll.votes ? poll.votes.reduce((a,b)=>a+b, 0) : 0;
+            return (
+              <div key={poll.pollId} className="poll-card-modern">
+                <div className="card-top-meta">
+                  <span className="status-badge active">Active</span>
+                  <span>ID #{poll.pollId}</span>
                 </div>
+                
+                <h3 className="card-title">{poll.question}</h3>
+                
+                <div className="card-stats-row">
+                  <div className="stat-item">
+                    <span className="stat-value">{totalVotes}</span>
+                    <span className="stat-label">Total Votes</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-value">{poll.options?.length || 0}</span>
+                    <span className="stat-label">Options</span>
+                  </div>
+                </div>
+
+                <Link to={`/polls/${poll.pollId}`} className="btn-card-action">
+                  Cast Vote
+                  <ArrowRightIcon style={{height: '18px'}} />
+                </Link>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>
