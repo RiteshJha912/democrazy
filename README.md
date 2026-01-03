@@ -1,6 +1,5 @@
 # Democrazy - Decentralized Voting Platform
 
----
 
 ## Technical Overview
 
