@@ -108,7 +108,3 @@ npm start
 # Requires .env: REACT_APP_CONTRACT_ADDRESS
 ```
 
-## License
-
-MIT License.
-Source: [Ritzardous@GitHub](https://github.com/RiteshJha912).
