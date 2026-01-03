@@ -80,15 +80,15 @@
     border-radius: 100px;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 0;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
     pointer-events: none;
 }
 
 .nav-link-item {
     text-decoration: none;
     color: var(--text-secondary);
+    font-family: 'Outfit', sans-serif;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     padding: 0.5rem 1.25rem;
     border-radius: 100px;
     transition: color 0.3s;
