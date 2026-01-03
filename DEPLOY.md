@@ -67,4 +67,4 @@ Vercel is optimized for React.
     app.use(cors({ origin: 'https://your-vercel-app.vercel.app' }));
     ```
 
-You are now live on the decentralized web! 🚀
+
