@@ -1,9 +1,4 @@
-# Democrazy - Decentralized Governance Platform
-
-<div align="center">
-  <h3>EVM-Based Decentralized Voting Application</h3>
-  <p>Solidiy | React | Ether.js | Node.js</p>
-</div>
+# Democrazy - Decentralized Voting Platform
 
 ---
 
