@@ -25,7 +25,7 @@ const PollDetail = ({ signer, account }) => {
             provider = new ethers.BrowserProvider(window.ethereum);
         } else {
             // Fallback for mobile/non-web3 browsers
-            provider = new ethers.JsonRpcProvider('https://rpc.sepolia.org');
+            provider = new ethers.JsonRpcProvider('https://ethereum-sepolia.publicnode.com');
         }
         
         const contract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, provider);
