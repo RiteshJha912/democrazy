@@ -1,4 +1,4 @@
-# Democrazy - Decentralized Voting Platform
+# Democrazy 
 
 
 ## Technical Overview
