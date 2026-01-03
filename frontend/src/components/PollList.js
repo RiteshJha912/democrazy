@@ -91,7 +91,7 @@ const PollList = () => {
                   </div>
 
                   <Link to={`/polls/${poll.pollId}`} className="btn-card-action">
-                    Cast Vote
+                    Vote
                     <ArrowRightIcon style={{height: '18px'}} />
                   </Link>
                 </div>

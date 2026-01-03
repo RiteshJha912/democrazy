@@ -177,12 +177,15 @@
 /* Button - The "Prodigy" Layout
    Simple, solid, high contrast. No gradients. */
 /* Button - Sophisticated Dark Glass */
+/* Button - Over-Engineered "magnetic" feel */
 .btn-card-action {
+    position: relative;
     background: rgba(255, 255, 255, 0.03);
     color: #e4e4e7;
-    /* Soft white/grey */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Fainter border initially */
+    border-radius: 12px;
+    /* Slightly sharper than pill for modern tech feel */
     padding: 1rem 1.5rem;
     font-weight: 600;
     font-size: 0.95rem;
@@ -190,27 +193,62 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+    /* For the shine effect */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Bouncy spring */
+    backdrop-filter: blur(10px);
+    z-index: 1;
 }
 
+/* The Shine Effect Layer */
+.btn-card-action::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+/* Hover State */
 .btn-card-action:hover {
-    background: rgba(255, 255, 255, 0.08);
-    /* Subtle highlight */
-    border-color: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-    /* Bright white on hover */
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(99, 102, 241, 0.5);
+    /* Primary color hint */
+    color: #fff;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(99, 102, 241, 0.2);
+    /* Inner glow ring */
+}
+
+/* Hover Swipe Effect */
+.btn-card-action:hover::before {
+    left: 100%;
+}
+
+.btn-card-action:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .btn-card-action svg {
     color: #a1a1aa;
-    /* Muted icon default */
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-card-action:hover svg {
-    color: #ffffff;
-    transform: translateX(4px);
+    color: var(--primary);
+    /* Lighting up the arrow */
+    transform: translateX(6px);
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
 }
 
 /* Empty State */
