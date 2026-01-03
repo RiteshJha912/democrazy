@@ -5,6 +5,11 @@
 
 Democrazy is a decentralized application (dApp) deployed on the Sepolia Testnet that facilitates on-chain governance. It utilizes an Ethereum smart contract for state persistence and immutable vote recording, ensuring censorship resistance and auditability. The frontend acts as a Web3 interface, managing wallet connections and transaction signing via `ethers.js`.
 
+## Live Demo
+
+*   **Frontend**: [votewithdemocrazy.vercel.app](https://votewithdemocrazy.vercel.app)
+*   **Backend API**: [democrazy-api.onrender.com](https://democrazy-api.onrender.com)
+
 ## Technologies Used
 
 *   **Smart Contracts**: Solidity (0.8.x), Hardhat
@@ -33,6 +38,13 @@ The stack follows a standard Web3 injection pattern with an auxiliary backend fo
 *   **Runtime**: Node.js / Express.
 *   **Function**: Caches blockchain state to reduce RPC read latency.
 *   **Database**: MongoDB (Structure compliant with on-chain schema).
+
+#### API Endpoints
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Health check to verify server status. |
+| `GET` | `/api/polls` | Retrieves all active polls sorted by creation date. |
+| `WS` | `Events` | Listens to Sepolia network for `PollCreated` and `VoteCasted` events. |
 
 ```mermaid
 graph TD
