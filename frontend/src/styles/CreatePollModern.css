@@ -1,8 +1,8 @@
 /* Wrapper */
 .create-wrapper {
-    max-width: 800px;
+    max-width: 640px;
     margin: 0 auto;
-    padding: 3rem 2rem 6rem;
+    padding: 1.5rem 1rem 3rem;
 }
 
 /* Form Card */
@@ -11,13 +11,13 @@
     backdrop-filter: blur(16px);
     border: var(--glass-border);
     border-radius: var(--radius-xl);
-    padding: 3rem;
+    padding: 2rem;
     box-shadow: var(--shadow-lg);
 }
 
 /* Input Styles */
 .modern-input-group {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .modern-label {
