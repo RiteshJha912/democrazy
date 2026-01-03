@@ -8,6 +8,7 @@ import PollList from './components/PollList';
 import CreatePoll from './components/CreatePoll';
 import PollDetail from './components/PollDetail';
 import AboutPage from './components/AboutPage';
+import ScrollToTop from './components/ScrollToTop';
 import './styles/AppShell.css';
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="app-container">
         <Navbar 
           account={account} 

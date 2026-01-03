@@ -19,16 +19,22 @@ const PollDetail = ({ signer, account }) => {
 
   // ... fetch logic similar to before ...
   const fetchPollData = useCallback(async () => {
-    if(!window.ethereum) { setLoading(false); return; }
     try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        let provider;
+        if (window.ethereum) {
+            provider = new ethers.BrowserProvider(window.ethereum);
+        } else {
+            // Fallback for mobile/non-web3 browsers
+            provider = new ethers.JsonRpcProvider('https://rpc.sepolia.org');
+        }
+        
         const contract = new ethers.Contract(CONTRACT_ADDRESS, VOTING_ABI, provider);
         const data = await contract.getPoll(id);
         setPoll({ question: data[1], options: Array.from(data[2]) });
         setVotes(Array.from(data[3]).map(v => Number(v)));
         setLoading(false);
     } catch (err) {
-        console.error(err);
+        console.error("Error fetching poll:", err);
         setLoading(false);
     }
   }, [id]);
