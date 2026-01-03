@@ -25,6 +25,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/voting-dapp
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
+app.get('/', (req, res) => res.send('Democrazy API is running'));
 app.use('/api/polls', pollRoutes);
 
 // Smart Contract Listener Setup
