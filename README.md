@@ -5,6 +5,14 @@
 
 Democrazy is a decentralized application (dApp) deployed on the Sepolia Testnet that facilitates on-chain governance. It utilizes an Ethereum smart contract for state persistence and immutable vote recording, ensuring censorship resistance and auditability. The frontend acts as a Web3 interface, managing wallet connections and transaction signing via `ethers.js`.
 
+## Technologies Used
+
+*   **Smart Contracts**: Solidity (0.8.x), Hardhat
+*   **Frontend**: React.js, Ethers.js (v6), CSS Modules
+*   **Backend**: Node.js, Express.js
+*   **Database**: MongoDB (Caching)
+*   **Network**: Ethereum Sepolia Testnet
+
 ## System Architecture
 
 The stack follows a standard Web3 injection pattern with an auxiliary backend for data aggregation.
@@ -54,22 +62,39 @@ graph TD
 
 ```text
 agtest/
-├── backend/                       # REST API & Indexer
-│   ├── models/                    # Mongoose Schemas
+├── backend/                       # Node.js Express Server (Caching & API)
+│   ├── models/                    # Mongoose Data Schemas
+│   │   └── Poll.js                # Schema for off-chain poll metadata
 │   ├── routes/                    # API Endpoints
-│   └── server.js                  # Entry Point
+│   │   └── polls.js               # Routes for CRUD operations on polls
+│   ├── server.js                  # Entry point (DB connection, Middleware)
+│   └── .env                       # Backend Config (Port, MongoURI)
 │
-├── frontend/                      # UX Interface
+├── frontend/                      # React Application (User Interface)
 │   ├── src/
-│   │   ├── components/            # Functional Components
-│   │   ├── styles/                # CSS Modules
-│   │   ├── utils/                 # Heuristic Filters
-│   │   └── App.js                 # Router & Web3 Context
+│   │   ├── components/            # Functional UI Components
+│   │   │   ├── PollList.js        # Dashboard displaying active proposals
+│   │   │   ├── PollDetail.js      # Individual poll view & voting interface
+│   │   │   ├── CreatePoll.js      # Form for initializing new proposals
+│   │   │   └── AboutPage.js       # Static informational page
+│   │   ├── styles/                # Component-Scoped CSS Modules
+│   │   │   ├── AppShell.css       # Layout, Navigation, and Footer styling
+│   │   │   ├── PollListModern.css # Styling for grid layout and cards
+│   │   │   ├── PollDetailModern.css # Styling for voting & results
+│   │   │   └── CreatePollModern.css # Styling for the creation form
+│   │   ├── utils/                 # Logic Helpers
+│   │   │   └── contentFilter.js   # Regex-based content moderation
+│   │   ├── App.js                 # Main Router, Web3 Provider, & Navbar
+│   │   └── index.css              # Global Design System (Variables, Reset)
+│   └── .env                       # Frontend Config (Contract Address)
 │
-└── smart-contract/                # EVM Environment
-    ├── contracts/                 # Voting.sol
-    ├── scripts/                   # Deploy.js
-    └── hardhat.config.js          # Network Config
+└── smart-contract/                # Hardhat Development Environment
+    ├── contracts/                 # Solidity Sources
+    │   └── Voting.sol             # Main Governance Contract
+    ├── scripts/                   # Automations
+    │   └── deploy.js              # Network deployment script
+    ├── hardhat.config.js          # Compiler & Network Configuration
+    └── .env                       # Secrets (Private Key, RPC URL)
 ```
 
 ## Deployment Specifications

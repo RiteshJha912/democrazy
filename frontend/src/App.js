@@ -90,6 +90,34 @@ function App() {
 
 function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
   const location = useLocation();
+  const navRefs = React.useRef({});
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
+
+  useEffect(() => {
+    const path = location.pathname;
+    // Handle root path specifically or others
+    let activePath = path;
+    if (path.startsWith('/polls/')) activePath = '/'; // Keep Home active on detail view if desired, or nothing. 
+    // Actually, usually detail view doesn't highlight 'Home' or 'Polls' unless specified. 
+    // Let's stick to exact matches for now, maybe map Detail to Polls.
+    if (path !== '/' && path !== '/create' && path !== '/about') activePath = '/'; // Default to polls or none? 
+    // Better: if it matches one of the known paths, highlight it.
+    
+    if (path === '/' || path.startsWith('/polls')) activePath = '/';
+    if (path === '/create') activePath = '/create';
+    if (path === '/about') activePath = '/about';
+
+    const activeEl = navRefs.current[activePath];
+    if (activeEl) {
+      setIndicatorStyle({
+        left: activeEl.offsetLeft,
+        width: activeEl.offsetWidth,
+        opacity: 1
+      });
+    } else {
+      setIndicatorStyle(prev => ({ ...prev, opacity: 0 }));
+    }
+  }, [location.pathname]);
 
   return (
     <nav className="navbar-glass">
@@ -99,13 +127,26 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
       </Link>
       
       <div className="nav-links">
-        <Link to="/" className={`nav-link-item ${location.pathname === '/' ? 'active' : ''}`}>
+        <div className="nav-indicator" style={indicatorStyle} />
+        <Link 
+          to="/" 
+          className={`nav-link-item ${location.pathname === '/' || location.pathname.startsWith('/polls') ? 'active' : ''}`}
+          ref={el => navRefs.current['/'] = el}
+        >
           Polls
         </Link>
-        <Link to="/create" className={`nav-link-item ${location.pathname === '/create' ? 'active' : ''}`}>
+        <Link 
+          to="/create" 
+          className={`nav-link-item ${location.pathname === '/create' ? 'active' : ''}`}
+          ref={el => navRefs.current['/create'] = el}
+        >
           Create Poll
         </Link>
-        <Link to="/about" className={`nav-link-item ${location.pathname === '/about' ? 'active' : ''}`}>
+        <Link 
+          to="/about" 
+          className={`nav-link-item ${location.pathname === '/about' ? 'active' : ''}`}
+          ref={el => navRefs.current['/about'] = el}
+        >
           About
         </Link>
       </div>

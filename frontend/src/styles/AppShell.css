@@ -54,10 +54,13 @@
 }
 
 /* Navigation Links - Unique Floating Dock */
+/* Navigation Links - Unique Floating Dock */
 .nav-links {
     display: flex;
-    gap: 0.5rem;
-    /* Tighter gap for segmented feel */
+    gap: 0;
+    /* Remove gap, use padding/margin if needed, or keeping it calculates correctly? Gap is fine if ref width includes it? No, links are distinct children. */
+    /* Ref logic uses offsetLeft, so gap is handled automatically in the 'space' between elements. */
+    position: relative;
     background: rgba(0, 0, 0, 0.3);
     /* Darker backdrop */
     padding: 0.4rem;
@@ -67,6 +70,33 @@
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     /* Inset depth */
     backdrop-filter: blur(10px);
+}
+
+.nav-indicator {
+    position: absolute;
+    top: 0.4rem;
+    height: calc(100% - 0.8rem);
+    background: var(--primary);
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 0;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    pointer-events: none;
+}
+
+.nav-link-item {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    transition: color 0.3s;
+    /* Only animate color */
+    position: relative;
+    z-index: 1;
+    background: transparent !important;
+    /* Force transparent */
 }
 
 .nav-link-item {
@@ -97,8 +127,18 @@
 }
 
 /* Remove old dot */
-.nav-link-item.active::after {
-    display: none;
+/* Hover Effect - Text only */
+.nav-link-item:hover {
+    color: #fff;
+    background: transparent;
+}
+
+/* Active State - Text only, background is handled by slider */
+.nav-link-item.active {
+    color: #fff;
+    font-weight: 600;
+    background: transparent;
+    box-shadow: none;
 }
 
 /* Wallet Button */
