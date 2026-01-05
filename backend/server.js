@@ -28,6 +28,37 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/voting-dapp
 app.get('/', (req, res) => res.send('Democrazy API is running'));
 app.use('/api/polls', pollRoutes);
 
+// Sync past polls on startup
+const syncPastPolls = async () => {
+    if (!process.env.SEPOLIA_URL || !process.env.CONTRACT_ADDRESS || votingABI.length === 0) return;
+    try {
+        console.log("Starting historical sync...");
+        const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_URL);
+        const contract = new ethers.Contract(process.env.CONTRACT_ADDRESS, votingABI, provider);
+        
+        const events = await contract.queryFilter("PollCreated");
+        for (const event of events) {
+            const pollId = Number(event.args[0]);
+            const question = event.args[1];
+            const options = event.args[2];
+            
+            const exists = await Poll.findOne({ pollId });
+            if (!exists) {
+                await new Poll({
+                    pollId,
+                    question,
+                    options,
+                    votes: new Array(options.length).fill(0)
+                }).save();
+                console.log(`Restored missing poll #${pollId}`);
+            }
+        }
+        console.log("History sync complete.");
+    } catch (e) {
+        console.error("Sync error:", e);
+    }
+};
+
 // Smart Contract Listener Setup
 const setupListeners = async () => {
     if (!process.env.SEPOLIA_URL || !process.env.CONTRACT_ADDRESS || votingABI.length === 0) {
@@ -72,7 +103,10 @@ const setupListeners = async () => {
     });
 };
 
-setupListeners();
+// Verify connection then sync & listen
+mongoose.connection.once('open', () => {
+    syncPastPolls().then(() => setupListeners());
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
