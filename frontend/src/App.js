@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ethers } from 'ethers';
-import { CubeTransparentIcon, WalletIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { CubeTransparentIcon, WalletIcon, HeartIcon, ArrowPathIcon, ArrowRightOnRectangleIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon, StarIcon } from '@heroicons/react/24/solid';
 import { FaGithub } from 'react-icons/fa';
 import PollList from './components/PollList';
@@ -94,17 +94,12 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
   const location = useLocation();
   const navRefs = React.useRef({});
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = React.useRef(null);
 
   useEffect(() => {
     const path = location.pathname;
-    // Handle root path specifically or others
     let activePath = path;
-    if (path.startsWith('/polls/')) activePath = '/'; // Keep Home active on detail view if desired, or nothing. 
-    // Actually, usually detail view doesn't highlight 'Home' or 'Polls' unless specified. 
-    // Let's stick to exact matches for now, maybe map Detail to Polls.
-    if (path !== '/' && path !== '/create' && path !== '/about') activePath = '/'; // Default to polls or none? 
-    // Better: if it matches one of the known paths, highlight it.
-    
     if (path === '/' || path.startsWith('/polls')) activePath = '/';
     if (path === '/create') activePath = '/create';
     if (path === '/about') activePath = '/about';
@@ -120,6 +115,36 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
       setIndicatorStyle(prev => ({ ...prev, opacity: 0 }));
     }
   }, [location.pathname]);
+
+  // Click outside listener
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsDropdownOpen(false);
+        }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSwitchWallet = async () => {
+    if (window.ethereum) {
+        try {
+            await window.ethereum.request({
+                method: "wallet_requestPermissions",
+                params: [{ eth_accounts: {} }]
+            });
+            setIsDropdownOpen(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+  };
+
+  const handleDisconnect = () => {
+      disconnectWallet();
+      setIsDropdownOpen(false);
+  };
 
   return (
     <nav className="navbar-glass">
@@ -153,12 +178,32 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
         </Link>
       </div>
 
-      <div className="nav-actions">
+      <div className="nav-actions" ref={dropdownRef}>
         {account ? (
-          <button className="btn-connect-wallet btn-connected" onClick={disconnectWallet}>
-            <CheckCircleIcon className="h-5 w-5" style={{height: '20px'}} />
-            <span>{account.slice(0, 6)}...{account.slice(-4)}</span>
-          </button>
+          <div style={{position: 'relative'}}>
+            <button 
+                className="btn-connect-wallet btn-connected" 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                style={{minWidth: '180px', justifyContent: 'space-between', paddingRight: '1rem'}}
+            >
+                <div style={{display: 'flex', alignItems: 'center', gap: '0.6rem'}}>
+                    <CheckCircleIcon className="h-5 w-5" style={{height: '20px'}} />
+                    <span>{account.slice(0, 6)}...{account.slice(-4)}</span>
+                </div>
+                <ChevronDownIcon style={{height: '16px', transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s', opacity: 0.7}} />
+            </button>
+            
+            {isDropdownOpen && (
+                <div className="nav-dropdown animate-fade-in">
+                    <button onClick={handleSwitchWallet} className="nav-dropdown-item">
+                        <ArrowPathIcon style={{height: '18px'}} /> Switch Wallet
+                    </button>
+                    <button onClick={handleDisconnect} className="nav-dropdown-item dropdown-danger">
+                        <ArrowRightOnRectangleIcon style={{height: '18px'}} /> Disconnect
+                    </button>
+                </div>
+            )}
+          </div>
         ) : (
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', width: '100%'}}>
             <button className="btn-connect-wallet" onClick={connectWallet} disabled={isConnecting}>
