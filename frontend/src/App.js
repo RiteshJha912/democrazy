@@ -180,7 +180,7 @@ function Navbar({ account, connectWallet, disconnectWallet, isConnecting }) {
 
       <div className="nav-actions" ref={dropdownRef}>
         {account ? (
-          <div style={{position: 'relative'}}>
+          <div style={{position: 'relative', width: '100%', display: 'flex', justifyContent: 'center'}}>
             <button 
                 className="btn-connect-wallet btn-connected" 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
